@@ -1,5 +1,11 @@
 const express = require("express");
-const { HOST_SOCKET, HOST } = require("../lib/data");
+const {
+  HOST_SOCKET,
+  HOST,
+  TWILLIO_PHONE_NUMBER,
+  TWILIO_AUTH_TOKEN_CALL,
+  TWILIO_ACCOUNT_SID_CALL,
+} = require("../lib/data");
 const router = express.Router();
 const twillio = require("twilio");
 const gaianetController = require("../controllers/gaianet.controller");
@@ -42,28 +48,33 @@ router.post("/respond", async (req, res) => {
   const response = new twillio.twiml.VoiceResponse();
 
   console.log("User Prompt: ", userPrompt);
+  response.say(
+    { voice: "Polly.Aditi", language: "en-IN" },
+    "We are processing your request. We will call you back shortly Please hold on ."
+  );
+
+  res.type("text/xml");
+  res.send(response.toString());
 
   try {
     const adminResponse = await gaianetController(userPrompt);
-    if (!adminResponse) {
-      response.say(
-        { voice: "Polly.Aditi", language: "en-IN" },
-        "Processing your request please wait"
-      );
-    } else {
-      response.say(
-        { voice: "Polly.Aditi", language: "en-IN" },
 
-        adminResponse
-      );
-    }
-
-    response.redirect(
-      {
-        method: "POST",
-      },
-      `${HOST}/gaia/transcribe?skip=true`
+    const twilioClient = twillio(
+      TWILIO_ACCOUNT_SID_CALL,
+      TWILIO_AUTH_TOKEN_CALL
     );
+    await twilioClient.calls.create({
+      to: +918888890180,
+      from: TWILLIO_PHONE_NUMBER,
+      twiml: `<Response><Say voice="Polly.Aditi">${adminResponse}</Say></Response>`,
+    });
+
+    // response.redirect(
+    //   {
+    //     method: "POST",
+    //   },
+    //   `${HOST}/gaia/transcribe?skip=true`
+    // );
   } catch (err) {
     console.error(err);
     response.say("Some error occuered please try again later");

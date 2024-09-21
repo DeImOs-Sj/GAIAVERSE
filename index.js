@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.use("/gaia", gaianetRoutes);
 app.use("/twillio", twillioRoutes);
-webSocket.app.ws("/ws", wsHandler);
+// webSocket.app.ws("/ws", wsHandler);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
