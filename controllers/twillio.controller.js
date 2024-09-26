@@ -9,10 +9,10 @@ const twilio = require("twilio");
 const accountSid = TWILIO_ACCOUNT_SID_CALL;
 const authToken = TWILIO_AUTH_TOKEN_CALL;
 const fromPhoneNumber = TWILLIO_PHONE_NUMBER;
-console.log("accountSid", accountSid);
 const client = twilio(accountSid, authToken);
 
 function triggerTwillioCall(toPhoneNumber) {
+  console.log("triggerTwillioCall -> toPhoneNumber");
   try {
     let url = `${HOST}/gaia/transcribe`;
 
@@ -22,7 +22,7 @@ function triggerTwillioCall(toPhoneNumber) {
       from: fromPhoneNumber,
     });
 
-    return `Called Initiated for  flow Successfully!`;
+    return `Called Initiated Successfully!`;
   } catch (err) {
     console.log(err);
 

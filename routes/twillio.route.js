@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/call", async (req, res) => {
   const { toPhoneNumber } = req.query;
-
+  console.log("toPhoneNumber", toPhoneNumber);
   const result = triggerTwillioCall(toPhoneNumber);
 
   return res.json({

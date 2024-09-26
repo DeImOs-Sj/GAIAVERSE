@@ -3,7 +3,8 @@ const axios = require("axios");
 async function gaianetController(userPrompt) {
   console.log("User Prompt:", userPrompt);
   const url =
-    "https://0xcb8c533af102bdd476019c84b249ebd0a4d4df6e.us.gaianet.network/v1/chat/completions";
+    "https://0xe8b4fd3a3ec4b31ab264210bfe593962f423e766.us.gaianet.network/v1/chat/completions";
+
   const data = {
     messages: [
       {
